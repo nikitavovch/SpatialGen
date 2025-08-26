@@ -5,7 +5,8 @@
 <!-- markdownlint-disable no-duplicate-header -->
 
 <div align="center">
-  <img src="assets/logo.png" width="60%" alt="SpatialGen" />
+  <img src="assets/logo_light.png#gh-light-mode-only" width="60%" alt="SpatialLM" />
+  <img src="assets/logo_dark.png#gh-dark-mode-only" width="60%" alt="SpatialLM" />
 </div>
 <hr style="margin-top: 0; margin-bottom: 8px;">
 <div align="center" style="margin-top: 0; padding-top: 0; line-height: 1;">
