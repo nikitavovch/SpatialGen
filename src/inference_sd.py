@@ -26,7 +26,6 @@ from diffusers import FluxControlNetModel, FluxControlNetPipeline
 
 from src.options import opt_dict, Options
 
-# from src.data import MixDataset
 from src.data import ExampleDataset
 from src.models.pose_adapter import RayMapEncoder
 
@@ -1673,6 +1672,21 @@ def main():
         default=0,
         help="The index of styled prompt for inference",
     )
+    parser.add_argument(
+        "--scene_id",
+        type=str,
+        default="scene_00000",
+        help="selected scene id to generate",
+    )
+    parser.add_argument(
+        "--style_prompt",
+        type=str,
+        default="A Traditional Chinese Style living room with rosewood furniture, jade ornaments, and silk screens, \
+            arranged in a feng shui layout with a central rosewood coffee table and a black lacquer sideboard. \
+            Warm, natural lighting enhances the deep red and gold accents, while paper lanterns and carved details add to the aesthetic. \
+            The color palette includes deep red, gold, black lacquer, jade green, and warm brown, creating a harmonious and elegant atmosphere.",
+        help="text prompt for FLUX-Controlnet"
+    )
 
     # Parse the arguments
     args, extras = parser.parse_known_args()
@@ -1850,58 +1864,8 @@ def main():
     global TARGET_ROOM_UIDS_PROMPTS
     TARGET_ROOM_UIDS_PROMPTS = None
     if val_dataset.load_dataset == "spatialgen":
-        TARGET_ROOM_UIDS_PROMPTS = {
-            "scene_00000": "A modern minimalist living room.",
-            "scene_00001": "A modern minimalist bedroom.",
-            "scene_00002": "A modern minimalist bedroom.",
-            "scene_00003": "A modern minimalist bathroom.",
-            "scene_00004": "A modern minimalist bedroom.",
-            "scene_00005": "A modern minimalist kitchen.",
-            "scene_00006": "A modern minimalist living room.",
-            "scene_00007": "A modern minimalist kitchen.",
-            "scene_00008": "A modern minimalist bedroom.",
-            "scene_00009": "A modern minimalist bedroom.",
-            "scene_00010": "A modern minimalist bedroom.",
-            "scene_00011": "A modern minimalist bedroom.",
-            "scene_00012": "A modern minimalist living room.",
-            "scene_00013": "A modern minimalist bedroom.",
-            "scene_00014": "A modern minimalist bedroom.",
-            "scene_00015": "A modern minimalist study.",
-            "scene_00016": "A modern minimalist bathroom.",
-            "scene_00017": "A modern minimalist living room.",
-            "scene_00018": "A modern minimalist bedroom.",
-            "scene_00019": "A modern minimalist living room.",
-            "scene_00020": "A modern minimalist bedroom.",
-            "scene_00021": "A modern minimalist bedroom.",
-            "scene_00022": "A modern minimalist kitchen.",
-            "scene_00023": "A modern minimalist bedroom.",
-            "scene_00024": "A modern minimalist living room.",
-            "scene_00025": "A modern minimalist kitchen.",
-            "scene_00026": "A modern minimalist kitchen.",
-            "scene_00027": "A modern minimalist living room.",
-            "scene_00028": "A modern minimalist bedroom.",
-            "scene_00029": "A modern minimalist bedroom.",
-            "scene_00030": "A modern minimalist bedroom.",
-            "scene_00031": "A modern minimalist living room.",
-            "scene_00032": "A modern minimalist bedroom.",
-            "scene_00033": "A modern minimalist study.",
-            "scene_00034": "A modern minimalist kitchen.",
-            "scene_00035": "A modern minimalist bedroom.",
-            "scene_00036": "A modern minimalist bathroom.",
-            "scene_00037": "A modern minimalist bedroom.",
-            "scene_00038": "A modern minimalist bedroom.",
-            "scene_00039": "A modern minimalist bedroom.",
-            "scene_00040": "A modern minimalist kitchen.",
-            "scene_00041": "A modern minimalist kitchen.",
-            "scene_00042": "A modern minimalist kitchen.",
-            "scene_00043": "A modern minimalist living room.",
-            "scene_00044": "A modern minimalist living room.",
-            "scene_00045": "A modern minimalist bedroom.",
-            "scene_00046": "A modern minimalist living room.",
-            "scene_00047": "A modern minimalist bedroom.",
-            "scene_00048": "A modern minimalist bathroom.",
-        }
-
+        TARGET_ROOM_UIDS_PROMPTS = {args.scene_id: args.style_prompt}
+        logger.info(f"TARGET_ROOM_UIDS_PROMPTS: {TARGET_ROOM_UIDS_PROMPTS}")
     elif val_dataset.load_dataset == "spatiallm":
         raise NotImplementedError("spatiallm dataset is not supported yet.")
 
