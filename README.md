@@ -78,6 +78,8 @@ We provide [SpatialGen-Testset](https://huggingface.co/datasets/manycore-researc
 bash scripts/infer_spatialgen_i2s.sh
 
 # Text-to-image-to-3D Scene
+# in captions/spatialgen_testset_captions.jsonl, we provide text prompts of different styles for each room, 
+# choose a pair of scene_id and prompt to run the text2scene experiment
 bash scripts/infer_spatialgen_t2s.sh
 ```
 
