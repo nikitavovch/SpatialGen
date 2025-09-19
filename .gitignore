@@ -1,0 +1,62 @@
+# OS files
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# Logs and runtime
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+*.pid.lock
+
+# Build output and caches (static site/bundlers)
+dist/
+build/
+public/build/
+.tmp/
+.temp/
+tmp/
+.cache/
+.parcel-cache/
+.vite/
+.sass-cache/
+
+# Package managers (tooling for assets)
+node_modules/
+
+# Source maps (usually not needed in repo)
+*.map
+
+# Environment files (keep examples)
+.env
+.env.*
+!.env.example
+
+# Deployment platform folders
+.netlify/
+.vercel/
+
+# Misc swap/backup files
+*.swp
+*.swo
+*.swm
+*~

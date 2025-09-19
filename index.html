@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/ if you update and want to force Facebook to rescrape. -->
+  <meta property="og:title" content="SpatialGen: Layout-guided 3D Indoor Scene Generation" />
+  <meta property="og:description"
+    content="SpatialGen is a multi-view multi-modal diffusion model for 3D indoor scene generation." />
+  <meta property="og:image" content="static/images/pipeline.jpg" />
+  <meta property="og:url" content="https://manycore-research.github.io/SpatialGen/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SpatialGen" />
+  <meta name="keywords" content="SpatialGen, 3D Scene Generation, 3D Layout, Diffusion Model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpatialGen</title>
+
+  <style>
+    .custom-hero {
+      padding: -10px 0;
+      /* Adjust these values to reduce the padding */
+    }
+
+    .custom-hero-body {
+      padding: 0px 0;
+      /* Adjust these values to reduce the padding */
+    }
+
+    .publication-title {
+      margin-top: -50px;
+      /* Adjust this value to reduce the margin below the title */
+    }
+
+    .publication-authors {
+      margin-bottom: 0px;
+      /* Adjust this value to reduce the margin between author blocks */
+    }
+
+    .publication-links {
+      margin-bottom: -10px;
+      /* Adjust this value to reduce the margin above the links */
+    }
+  </style>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HKRS7BH51M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-HKRS7BH51M');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/style.css">
+  <link rel="icon" href="./static/images/icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/manycore-research">
+        <span class="icon">
+          <i class="fab fa-github"></i>
+        </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://manycore-research.github.io/faceformer">
+            faceformer
+          </a>
+          <a class="navbar-item" href="https://manycore-research.github.io/cstr">
+            cstr
+          </a>
+          <a class="navbar-item" href="https://manycore-research.github.io/PlankAssembly">
+            PlankAssembly
+          </a>
+          <a class="navbar-item" href="https://manycore-research.github.io/CAD2Program">
+            CAD2Program
+          </a>
+          <a class="navbar-item" href="https://manycore-research.github.io/SpatialLM">
+            SpatialLM
+          </a>
+          <a class="navbar-item" href="https://manycore-research.github.io/SpatialGen">
+            SpatialGen
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<body>
+
+  <section class="hero custom-hero">
+    <div class="hero-body custom-hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span class="dnerf">SpatialGen</span><br>Layout-guided
+              3D Indoor Scene Generation</h1>
+            <div class="is-size-5 publication-authors">
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://fangchuan.github.io/">Chuan Fang</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://hengli.me/">Heng Li</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://yixunliang.github.io/">Yixun Liang</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://bertjiazheng.github.io">Jia Zheng</a><sup>2</sup>,
+                </span>
+                <br>
+                <span class="author-block">
+                  <a href="https://sammaoys.github.io/">Yongsen Mao</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://liuyuan-pal.github.io/">Yuan Liu</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=dwvfKSkAAAAJ">Rui Tang</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://zihan-z.github.io">Zihan Zhou</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://pingtan.people.ust.hk/index.html">Ping Tan</a><sup>1</sup>
+                </span>
+              </div>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <sup>1</sup><a href="https://www.ust.hk/">Hong Kong University of Science and Technology</a>,
+              </span>
+              <span class="author-block">
+                <sup>2</sup><a href="https://manycoretech.com">Manycore Tech Inc.</a>
+              </span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- arXiv Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2509.14981" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/manycore-research/SpatialGen"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Model Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/manycore-research/SpatialGen-1.0"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <img src="./static/images/huggingface_logo-noborder.svg" alt="Hugging Face" width="18"
+                        height="18" />
+                    </span>
+                    <span>Model</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/manycore-research/SpatialGen-Testset"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fa fa-database"></i>
+                    </span>
+                    <span>Testset</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <!-- Teaser. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <video poster="./static/images/teaser.jpg" id="program" autoplay muted loop playsinline height="100%">
+            <source src="https://manycore-research-azure.kujiale.com/manycore-research/SpatialGen/teaser.mp4"
+              type="video/mp4">
+          </video>
+          <div class="subtitle has-text-centered">
+            <p>
+              <span class="dnerf">SpatialGen</span> generates a photo-realistic 3D indoor scene given a 3D layout.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Teaser. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Introduction</h2>
+          <div class="content has-text-justified">
+            <p>
+              Creating high-fidelity 3D models of indoor environments is essential for applications in design, virtual
+              reality, and robotics. However, manual 3D modeling remains time-consuming and labor-intensive. While
+              recent advances in generative AI have enabled automated scene synthesis, existing methods often face
+              challenges in balancing visual quality, diversity, semantic consistency, and user control. A major
+              bottleneck is the lack of a large-scale, high-quality dataset tailored to this task. To address this gap,
+              we introduce a comprehensive synthetic dataset, featuring 12,328 structured annotated scenes with
+              57,440 rooms, and 4.7M photorealistic 2D renderings. Leveraging this dataset, we present <span
+                class="dnerf">SpatialGen</span>, a novel multi-view multi-modal diffusion model that generates realistic
+              and semantically consistent 3D indoor scenes. Given a 3D layout and a reference image (derived from a text
+              prompt), our model synthesizes appearance (color image), geometry (scene coordinate map), and semantic
+              (semantic segmentation map) from arbitrary viewpoints, while preserving spatial consistency across
+              modalities. <span class="dnerf">SpatialGen</span> consistently generates superior results to previous
+              methods in our experiments. We are open-sourcing our data and models to empower the community and advance
+              the field of indoor scene understanding and generation.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Pipeline. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3"><span class="dnerf">SpatialGen</span> Pipeline</h2>
+          <img src="static/images/pipeline.png" />
+          <div class="content has-text-justified">
+            <p>
+              <span class="dnerf">SpatialGen</span> is a multi-view, multi-modal diffusion model that generates
+              view-consistent 3D indoor scenes from a semantic layout.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Pipeline. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Dataset. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3"><span class="dnerf">SpatialGen Dataset</span></h2>
+          <video poster="./static/images/dataset.jpg" id="program" autoplay muted loop playsinline height="100%">
+            <source src="https://manycore-research-azure.kujiale.com/manycore-research/SpatialGen/dataset.mp4"
+              type="video/mp4">
+          </video>
+          <div class="content has-text-justified">
+            <p>
+              We introduce a large-scale synthetic dataset, <span class="dnerf">SpatialGen Dataset</span>, featuring
+              12,328 structured annotated scenes with 57,440 rooms, and 4.7M photorealistic 2D renderings. We create
+              physically plausible camera trajectories that navigate smoothly through each scene while avoiding
+              obstacles. These trajectories are sampled at 0.5m intervals to ensure comprehensive spatial coverage. For
+              each viewpoint, we generate photorealistic panoramic renderings using an industry-leading rendering
+              engine, capturing color, depth, normal, semantic, and instance segmentation data.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Dataset. -->
+    </div>
+  </section>
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Text to Image to 3D Scene</h2>
+        </div>
+      </div>
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/t2s1.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/t2s2.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/t2s3.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Text to Image to 3D Scene (Style Variants)</h2>
+        </div>
+      </div>
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source
+                src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/style1.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source
+                src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/style2.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source
+                src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/style3.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Single Image to 3D Scene</h2>
+        </div>
+      </div>
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/i2s1.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/i2s2.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video autoplay muted loop playsinline width="100%">
+              <source src="https://kujialeblob.blob.core.chinacloudapi.cn/manycore-research/SpatialGen/results/i2s3.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{SpatialGen,
+  title         = {SpatialGen: Layout-guided 3D Indoor Scene Generation},
+  author        = {Fang, Chuan and Li, Heng and Liang, Yixu and Zheng, Jia and Mao, Yongsen and Liu, Yuan and Tang, Rui and Zhou, Zihan and Tan, Ping},
+  journal       = {arXiv preprint},
+  year          = {2025},
+  eprint        = {2509.14981},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="Acknowledgements">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Acknowledgements</h2>
+      This work was done during Chuan Fang's internship at <a href="https://manycoretech.com">Manycore Tech Inc.</a>
+      This work was partially supported by the Key R&amp;D Program of Zhejiang Province (2025C01001) and the HKUST
+      project 24251090T019. We would like to thank the engineering team in Manycore Tech Inc., -- Yingqi Shen, Liangbin
+      Hu, and Fuchun Dong -- for their exceptional effort in supporting building the large-scale <span
+        class="dnerf">SpatialGen Dataset</span>. We are also grateful to Chenfeng Hou and Zhiwei Wang for developing the
+      layout ControlNet. Additionally, we extend our thanks to Kunming Luo for his valuable suggestions regarding the
+      paper figures.
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a href="https://arxiv.org/abs/2509.14981" class="icon-link external-link" disabled>
+          <span class="icon">
+            <i class="fas fa-file-pdf"></i>
+          </span>
+        </a>
+        <a class="icon-link" href="https://github.com/manycore-research/SpatialGen" class="external-link" disabled>
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+        </a>
+        <a class="icon-link" href="https://huggingface.co/manycore-research/SpatialGen-1.0">
+          <span class="icon">
+            <img src="./static/images/huggingface_logo-noborder.svg" alt="Hugging Face" width="24" height="24" />
+          </span>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This webpage template is from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
