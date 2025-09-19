@@ -1,4 +1,4 @@
-# SpatialGen
+# SpatialGen: Layout-guided 3D Indoor Scene Generation
 
 <!-- markdownlint-disable first-line-h1 -->
 <!-- markdownlint-disable html -->
@@ -24,7 +24,7 @@
 | :--------------------------------------: | :----------------------------------------: |
 | ![Img2Scene](./assets/vis_img2scene.png) | ![Text2Scene](./assets/vis_text2scene.png) |
 
-<p>SpatialGen produces multi-view, multi-modal information from a semantic layout using a multi-view, multi-modal diffusion model.</p>
+<p>TL;DR: Given a 3D semantic layout, SpatialGen can generate a 3D indoor scene conditioned on either a reference image (left) or a textual description (right) using a multi-view, multi-modal diffusion model.</p>
 </div>
 
 ## ✨ News
