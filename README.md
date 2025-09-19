@@ -10,6 +10,8 @@
 </div>
 <hr style="margin-top: 0; margin-bottom: 8px;">
 <div align="center" style="margin-top: 0; padding-top: 0; line-height: 1;">
+    <a href="https://arxiv.org/abs/2509.14981" target="_blank" style="margin: 2px;"><img alt="arXiv"
+    src="https://img.shields.io/badge/arXiv-SpatialGen-b31b1b?logo=arxiv&logoColor=white" style="display: inline-block; vertical-align: middle;"/></a>
     <a href="https://github.com/manycore-research/SpatialGen" target="_blank" style="margin: 2px;"><img alt="GitHub"
     src="https://img.shields.io/badge/GitHub-SpatialGen-24292e?logo=github&logoColor=white" style="display: inline-block; vertical-align: middle;"/></a>
     <a href="https://huggingface.co/manycore-research/SpatialGen-1.0" target="_blank" style="margin: 2px;"><img alt="Hugging Face"
@@ -28,6 +30,7 @@
 ## ✨ News
 
 - [Aug, 2025] Initial release of SpatialGen-1.0!
+- [Sep, 2025] We release the paper of SpatialGen!
 
 ## 📋 Release Plan
 
