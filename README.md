@@ -10,6 +10,8 @@
 </div>
 <hr style="margin-top: 0; margin-bottom: 8px;">
 <div align="center" style="margin-top: 0; padding-top: 0; line-height: 1;">
+    <a href="https://manycore-research.github.io/SpatialGen" target="_blank" style="margin: 2px;"><img alt="Project"
+    src="https://img.shields.io/badge/🌐%20Project-SpatialGen-ffc107?color=42a5f5&logoColor=white" style="display: inline-block; vertical-align: middle;"/></a>
     <a href="https://arxiv.org/abs/2509.14981" target="_blank" style="margin: 2px;"><img alt="arXiv"
     src="https://img.shields.io/badge/arXiv-SpatialGen-b31b1b?logo=arxiv&logoColor=white" style="display: inline-block; vertical-align: middle;"/></a>
     <a href="https://github.com/manycore-research/SpatialGen" target="_blank" style="margin: 2px;"><img alt="GitHub"
