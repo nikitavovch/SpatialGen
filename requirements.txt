@@ -39,3 +39,4 @@ torchvision==0.18.1+cu121
 xformers==0.0.27
 iopath
 pytorch3d
+peft
