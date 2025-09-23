@@ -677,6 +677,7 @@ class ExampleDataset(Dataset):
         layout_semantic_dir = os.path.join(sample_room_path, "layout_semantic")
         layout_depth_dir = os.path.join(sample_room_path, "layout_depth")
         cam_meta_filepath = os.path.join(sample_room_path, "cameras.json")
+        flux_condition_dir = os.path.join(sample_room_path, "condition")
 
         # load camera poses
         cameras_meta = read_json(cam_meta_filepath)
@@ -698,6 +699,7 @@ class ExampleDataset(Dataset):
         poses, rgbs = [], []
         depths, normals, semantics = [], [], []
         render_semantics, render_depths = [], []
+        controlnet_conds = []    # condition iimgs for FLUX controlnet(https://huggingface.co/manycore-research/FLUX.1-Wireframe-dev-lora)
 
         intrinsic_mat = torch.tensor(cameras_meta["intrinsic"], dtype=torch.float32).reshape(3, 3)
         ori_img_height, ori_img_width = cameras_meta["height"], cameras_meta["width"]
@@ -751,7 +753,12 @@ class ExampleDataset(Dataset):
                 subview_layout_depths[0][subview_layout_depths[0] > 12.5] = 12.5
                 render_semantics += subview_layout_semantics
                 render_depths += subview_layout_depths
-
+                
+            if os.path.exists(flux_condition_dir):
+                flux_condition_img_filepath = os.path.join(flux_condition_dir, frame_name + ".jpg")
+                flux_condition_rgb = self._load_pil_image(flux_condition_img_filepath)  # (1, 3, H, W)
+                controlnet_conds.append(flux_condition_rgb * 2.0 - 1.0)
+                
             subview_poses = [c2w_pose]
 
             poses += subview_poses
@@ -772,7 +779,11 @@ class ExampleDataset(Dataset):
         if self.use_layout_prior or self.use_layout_prior_from_p3d:
             render_semantics = torch.stack(render_semantics, dim=0)
             render_depths = torch.stack(render_depths, dim=0)
-
+        if len(controlnet_conds) > 0:
+            controlnet_conds: Float[Tensor, "N 3 H W"] = torch.cat(controlnet_conds, dim=0)
+        else:
+            controlnet_conds = None
+            
         metric_poses = poses.clone()
         metric_depths = depths.clone()
 
@@ -937,16 +948,9 @@ class ExampleDataset(Dataset):
             data["layout_depth_metric_input"] = render_depths[:T_in]
             data["layout_depth_metric_target"] = render_depths[T_in : self.num_sample_views]
         data["intrinsic"] = intrinsic_mat
-        # if self.koolai_prompt_dir is not None:
-        #     scene_uid = room_uid.split("/")[1]
-        #     room_id = sample_room_path.split("/")[-1]
-        #     uid = f"{scene_uid}_{room_id}"
-        #     prompt_npz_data = np.load(f"{self.koolai_prompt_dir}/{uid}.npz")
-        #     prompt_embed = torch.from_numpy(prompt_npz_data["caption_feature"])[0]
-        #     prompt_attention_mask = torch.from_numpy(prompt_npz_data["attention_mask"])[0]
-        #     data["prompt_embed"] = prompt_embed
-        #     data["prompt_attention_mask"] = prompt_attention_mask
-
+        if controlnet_conds is not None:
+            data["controlnet_image_input"] = controlnet_conds[:T_in]
+            data["controlnet_image_target"] = controlnet_conds[T_in : self.num_sample_views]
         return data
 
     def inner_get_item(self, index: int) -> Dict:

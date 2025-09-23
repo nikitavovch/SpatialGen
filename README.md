@@ -22,6 +22,16 @@
 
 <div align="center">
 
+[Chuan Fang](https://fangchuan.github.io/), [Heng Li](https://hengli.me/), [Yixun Liang](https://yixunliang.github.io/), [Jia Zheng](https://bertjiazheng.github.io), [Yongsen Mao](https://sammaoys.github.io/), [Yuan Liu](https://liuyuan-pal.github.io/), [Rui Tang](https://scholar.google.com/citations?user=dwvfKSkAAAAJ), [Zihan Zhou](https://zihan-z.github.io), [Ping Tan](https://pingtan.people.ust.hk/index.html)
+
+
+**[HKUST Spatial Artificial Intelligence Lab](https://github.com/HKUST-SAIL)**; **[Manycore Tech Inc](https://manycoretech.com/)**
+
+
+</div>
+
+<div align="center">
+
 | Image-to-Scene Results                   | Text-to-Scene Results                      |
 | :--------------------------------------: | :----------------------------------------: |
 | ![Img2Scene](./assets/vis_img2scene.png) | ![Text2Scene](./assets/vis_text2scene.png) |
@@ -85,6 +95,10 @@ We provide [SpatialGen-Testset](https://huggingface.co/datasets/manycore-researc
 bash scripts/infer_spatialgen_i2s.sh
 
 # Text-to-image-to-3D Scene
+# step 1. prepare controlnet conditional images
+python3 preprocess/prepare_flux_ctrlnet_conditions.py --dataset_dir /path/to/your/spatialgen-testset
+
+# step 2. run spatialgen text2scene
 # in captions/spatialgen_testset_captions.jsonl, we provide text prompts of different styles for each room, 
 # choose a pair of scene_id and prompt to run the text2scene experiment
 bash scripts/infer_spatialgen_t2s.sh

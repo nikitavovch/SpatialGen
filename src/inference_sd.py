@@ -22,7 +22,7 @@ from einops import rearrange
 from PIL import Image
 from transformers import CLIPTextModel, CLIPTokenizer
 from diffusers import DDIMScheduler, DPMSolverMultistepScheduler, EulerDiscreteScheduler, AutoencoderKL, AutoencoderTiny
-from diffusers import FluxControlNetModel, FluxControlNetPipeline
+from diffusers import FluxControlNetModel, FluxControlPipeline
 
 from src.options import opt_dict, Options
 
@@ -1215,12 +1215,16 @@ def inference_controlnet(
 
 
 def init_controlnet_pipeline(base_model_path: str, controlnet_path: str, device: torch.device):
-    controlnet = FluxControlNetModel.from_pretrained(controlnet_path, torch_dtype=torch.bfloat16)
-    pipe = FluxControlNetPipeline.from_pretrained(
-        base_model_path,
-        controlnet=controlnet,
-        torch_dtype=torch.bfloat16,
+    # controlnet = FluxControlNetModel.from_pretrained(controlnet_path, torch_dtype=torch.bfloat16)
+    # pipe = FluxControlNetPipeline.from_pretrained(
+    #     base_model_path,
+    #     controlnet=controlnet,
+    #     torch_dtype=torch.bfloat16,
+    # )
+    pipe = FluxControlPipeline.from_pretrained(
+        base_model_path, torch_dtype=torch.bfloat16
     )
+    pipe.load_lora_weights(controlnet_path)
     pipe.to(device)
     return pipe
 
@@ -1383,18 +1387,21 @@ def log_val_autoregressive_from_dataloader(
                             dtype=weight_dtype
                         )  # B,8,3,H,W
                         in_view_rgbs = all_controlnet_rgbs[0:1, in_view_ids]
+                        debug_controlnet_img = torch.cat(
+                            [all_rgbs[0, in_view_ids] * 0.5 + 0.5, in_view_sems[0] * 0.5 + 0.5, in_view_rgbs[0] * 0.5 + 0.5]
+                        )
                     else:
+                        in_view_flux_conditions = batch["controlnet_image_input"][0:1, in_view_ids]
                         in_view_rgbs: Float[Tensor, "B Ni 3 H W"] = inference_controlnet(
                             controlnet_pipeline,
-                            input_layout_semantics=in_view_sems,
+                            input_layout_semantics=in_view_flux_conditions,
                             input_layout_depths=in_view_scms,
                             prompts=prompts,
                             generator=generator,
                         )
-
-                    debug_controlnet_img = torch.cat(
-                        [all_rgbs[0, in_view_ids] * 0.5 + 0.5, in_view_sems[0] * 0.5 + 0.5, in_view_rgbs[0] * 0.5 + 0.5]
-                    )
+                        debug_controlnet_img = torch.cat(
+                            [all_rgbs[0, in_view_ids] * 0.5 + 0.5, in_view_flux_conditions[0] * 0.5 + 0.5, in_view_rgbs[0] * 0.5 + 0.5]
+                        )
                     torchvision.utils.save_image(
                         debug_controlnet_img, os.path.join(round_output_folder, "debug_controlnet.png")
                     )
@@ -1826,7 +1833,7 @@ def main():
     if args.use_controlnet:
         controlnet_pipeline = init_controlnet_pipeline(
             base_model_path="black-forest-labs/FLUX.1-dev",
-            controlnet_path="manycore-research/FLUX.1-Layout-ControlNet",
+            controlnet_path="manycore-research/FLUX.1-Wireframe-dev-lora",
             device=device,
         )
     else:
