@@ -57,7 +57,6 @@
 | **Model**                 | **Download**                                                                         |
 | :-----------------------: | -------------------------------------------------------------------------------------|
 | SpatialGen-1.0            | [🤗 HuggingFace](https://huggingface.co/manycore-research/SpatialGen-1.0)            |
-| FLUX.1-Layout-ControlNet  | [🤗 HuggingFace](https://huggingface.co/manycore-research/FLUX.1-Layout-ControlNet)  |
 | FLUX.1-Wireframe-dev-lora | [🤗 HuggingFace](https://huggingface.co/manycore-research/FLUX.1-Wireframe-dev-lora) |
 
 </div>
@@ -95,7 +94,7 @@ We provide [SpatialGen-Testset](https://huggingface.co/datasets/manycore-researc
 bash scripts/infer_spatialgen_i2s.sh
 
 # Text-to-image-to-3D Scene
-# step 1. prepare controlnet conditional images
+# step 1. prepare controlnet conditional images, save to /path/to/your/spatialgen-testset/scene_xxxx/condition
 python3 preprocess/prepare_flux_ctrlnet_conditions.py --dataset_dir /path/to/your/spatialgen-testset
 
 # step 2. run spatialgen text2scene
