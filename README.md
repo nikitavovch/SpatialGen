@@ -105,7 +105,7 @@ bash scripts/infer_spatialgen_t2s.sh
 
 ## License
 
-[SpatialGen-1.0](https://huggingface.co/manycore-research/SpatialGen-1.0) is derived from [Stable-Diffusion-v2.1](https://github.com/Stability-AI/stablediffusion), which is licensed under the [CreativeML Open RAIL++-M License](https://github.com/Stability-AI/stablediffusion/blob/main/LICENSE-MODEL). [FLUX.1-Layout-ControlNet](https://huggingface.co/manycore-research/FLUX.1-Layout-ControlNet) and [FLUX.1-Wireframe-dev-lora](https://huggingface.co/manycore-research/FLUX.1-Wireframe-dev-lora) are licensed under the [FLUX.1-dev Non-Commercial License](https://github.com/black-forest-labs/flux/blob/main/model_licenses/LICENSE-FLUX1-dev).
+[SpatialGen-1.0](https://huggingface.co/manycore-research/SpatialGen-1.0) is derived from [Stable-Diffusion-v2.1](https://github.com/Stability-AI/stablediffusion), which is licensed under the [CreativeML Open RAIL++-M License](https://github.com/Stability-AI/stablediffusion/blob/main/LICENSE-MODEL). [FLUX.1-Wireframe-dev-lora](https://huggingface.co/manycore-research/FLUX.1-Wireframe-dev-lora) is licensed under the [FLUX.1-dev Non-Commercial License](https://github.com/black-forest-labs/flux/blob/main/model_licenses/LICENSE-FLUX1-dev).
 
 ## Acknowledgements
 
