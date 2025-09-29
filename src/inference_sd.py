@@ -1175,7 +1175,7 @@ def model_inference(
 
 @torch.no_grad()
 def inference_controlnet(
-    controlnet_pipeline: FluxControlNetPipeline,
+    controlnet_pipeline: FluxControlPipeline,
     input_layout_semantics: Float[Tensor, "B N 3 H W"],
     input_layout_depths: Float[Tensor, "B N 3 H W"],
     prompts: List[str],
@@ -1215,12 +1215,6 @@ def inference_controlnet(
 
 
 def init_controlnet_pipeline(base_model_path: str, controlnet_path: str, device: torch.device):
-    # controlnet = FluxControlNetModel.from_pretrained(controlnet_path, torch_dtype=torch.bfloat16)
-    # pipe = FluxControlNetPipeline.from_pretrained(
-    #     base_model_path,
-    #     controlnet=controlnet,
-    #     torch_dtype=torch.bfloat16,
-    # )
     pipe = FluxControlPipeline.from_pretrained(
         base_model_path, torch_dtype=torch.bfloat16
     )
@@ -1233,7 +1227,7 @@ def init_controlnet_pipeline(base_model_path: str, controlnet_path: str, device:
 def log_val_autoregressive_from_dataloader(
     validation_dataloader,
     pipeline: SpatialGenDiffusionPipeline,
-    controlnet_pipeline: FluxControlNetPipeline,
+    controlnet_pipeline: FluxControlPipeline,
     args: argparse.Namespace,
     weight_dtype,
     opt: Options,

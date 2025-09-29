@@ -26,7 +26,7 @@ for i in "${!INFER_TRAGS[@]}"; do
         --style_prompt "A Traditional Chinese Style living room with rosewood furniture, jade ornaments, and silk screens, arranged in a feng shui layout with a central rosewood coffee table and a black lacquer sideboard. Warm, natural lighting enhances the deep red and gold accents, while paper lanterns and carved details add to the aesthetic. The color palette includes deep red, gold, black lacquer, jade green, and warm brown, creating a harmonious and elegant atmosphere." \
         --guidance_scale 3.5 \
         --output_dir ./out \
-        opt.pretrained_model_name_or_path=manycore-research/SpatialGen-1.0 \
+        opt.pretrained_model_name_or_path=spatialgen_ckpts \
         opt.input_res=512 \
         opt.num_input_views=1 \
         opt.num_views=16 \

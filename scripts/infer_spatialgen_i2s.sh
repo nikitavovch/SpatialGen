@@ -12,7 +12,7 @@ python3 src/inference_sd.py \
     --infer_tag=Img23D_exp_spatialgen_16view_0824 \
     --guidance_scale 3.5 \
     --output_dir ./out  \
-    opt.pretrained_model_name_or_path=manycore-research/SpatialGen-1.0 \
+    opt.pretrained_model_name_or_path=spatialgen_ckpts \
     opt.input_res=512 \
     opt.num_input_views=1 \
     opt.num_views=16 \

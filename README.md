@@ -90,6 +90,9 @@ We provide [SpatialGen-Testset](https://huggingface.co/datasets/manycore-researc
 ### Inference
 
 ```bash
+# download the pretrain weights
+huggingface-cli download --resume-download manycore-research/SpatialGen-1.0 --local-dir spatialgen_ckpts
+
 # Single image-to-3D Scene
 bash scripts/infer_spatialgen_i2s.sh
 
