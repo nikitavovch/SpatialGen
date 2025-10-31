@@ -2,8 +2,8 @@ opt_type: "spatialgen_sd21"
 
 opt:
   dataset_name: "spatialgen"
-  test_data_dir: "<put your spatialgen-testset data folder here/>"
-  test_split_file: "put your spatialgen-testset data folder here/test_split.txt"
+  test_data_dir: "SpatialGen-Testset"
+  test_split_file: "SpatialGen-Testset/test_split.txt"
 
 optimizer:
   name: "adamw"

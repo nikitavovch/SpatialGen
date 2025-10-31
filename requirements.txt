@@ -11,7 +11,7 @@ einops
 safetensors
 sentencepiece
 accelerate
-transformers
+transformers==4.55.4
 diffusers==0.32
 kiui
 omegaconf
